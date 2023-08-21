@@ -1,6 +1,8 @@
 import requests as r
+
 from Bio import SeqIO
 from io import StringIO
+from typing import List, Tuple
 
 
 
@@ -58,6 +60,7 @@ def find_mers_with_K(sequence:str) -> list:
     """
 
     mers = []
+    k_positions = []
     for i in range(len(sequence)):
 
         if sequence[i] == 'K':
@@ -66,8 +69,9 @@ def find_mers_with_K(sequence:str) -> list:
 
             
             mers.append(subseq)
+            k_positions.append(position)
 
-    return mers
+    return mers, k_positions
 
 
 def retrive_protein_sequence_with_uniprotid(uniprot_id:str) -> str :
@@ -84,12 +88,58 @@ def retrive_protein_sequence_with_uniprotid(uniprot_id:str) -> str :
 
     baseUrl="http://www.uniprot.org/uniprot/"
     currentUrl=baseUrl+uniprot_id+".fasta"
-    response = r.post(currentUrl)
-    cData=''.join(response.text)
 
-    Seq=StringIO(cData)
+    try:
+        response = r.post(currentUrl)
+        cData=''.join(response.text)
 
-    protein_sequence = list(SeqIO.parse(Seq,'fasta'))[0].seq
+        Seq=StringIO(cData)
 
-    return str(protein_sequence)
+        protein_sequence = list(SeqIO.parse(Seq,'fasta'))[0].seq
 
+        return str(protein_sequence)
+    
+    except:
+
+        return None
+
+def protein_sequence_input(sequence_fasta_str:str) -> Tuple[List[str], List[str]]:
+
+    protein_ids, protein_seqs,k_positions = [], [], []
+    sequence_fasta_list = sequence_fasta_str.split()
+
+    for index, item in enumerate(sequence_fasta_list):
+
+        if index % 2 == 0:
+
+            protein_id = item
+
+        else:
+
+            mers, k_position = find_mers_with_K(item)
+            
+            protein_seqs += mers
+            k_positions += k_position
+            protein_ids += [protein_id] * len(mers)
+            
+
+    return protein_ids, protein_seqs, k_positions
+
+def uniprot_id_input(protein_sequence,uniprot_id,lysine_position=None):
+
+    protein_ids, protein_seqs, k_positions = [], [], []
+
+    if lysine_position == None:
+
+        protein_seqs, k_positions = find_mers_with_K(protein_sequence)
+        protein_ids+=[uniprot_id] * len(protein_seqs)
+
+    else:
+
+        subseq = extract_subseq_with_k_position(protein_sequence,lysine_position)   
+        
+        protein_ids.append(uniprot_id)
+        protein_seqs.append(subseq)
+        k_positions.append(lysine_position)
+
+    return protein_ids, protein_seqs, k_positions

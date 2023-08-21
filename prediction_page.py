@@ -1,16 +1,16 @@
 import streamlit as st
 import time
+import pandas as pd
 
-from model import SUMOnet
-from utils import *
-from encodings_sumo import *
+from pretrained_model.model import SUMOnet
+from utils.sequence_manipulations import *
+from utils.encodings_sumo import get_encoded_X_vector_from_data
+from utils.prediction_utils import prediction_outputs
 
 sequences = None
 # Store the initial value of widgets in session state
-if "visibility" not in st.session_state:
-    st.session_state.visibility = "visible"
-    st.session_state.disabled = False
-    st.session_state.placeholder = ">O00566\nMAPQVWRRRTLERCLTEVGKATGRPECFLTIQEGLASKFT"
+
+    
 
 @st.cache_data
 def convert_df(df):
@@ -20,6 +20,23 @@ def convert_df(df):
 def load_models():
 
     return SUMOnet()
+
+def make_prediction(protein_ids, protein_seqs, k_positions):
+    X_train = get_encoded_X_vector_from_data(protein_seqs)
+    with st.spinner('Model is loading...'):
+        my_model = load_models()
+    with st.spinner('Predictions are calculating...'):
+        predicted_probs = my_model.predict(X_train)
+        df = prediction_outputs(protein_ids, protein_seqs, k_positions, predicted_probs)
+    st.table(df.head())
+    csv = convert_df(df)
+    st.download_button(
+    "Press to Download Full Predictions",
+    csv,
+    "sumoylation_predictions.csv",
+    "text/csv",
+    key='download-csv'
+    )
 
 def show_predict_page():
 
@@ -35,9 +52,11 @@ def show_predict_page():
         st.markdown('<p style="font-family:monospace">You can enter protein sequence in fasta format. Multiple sequences are also okay.</p>',unsafe_allow_html=True)
         
         sequences = st.text_area(label="Protein Sequence👇",
-            label_visibility=st.session_state.visibility,
-            disabled=st.session_state.disabled,
-            placeholder=st.session_state.placeholder)
+            label_visibility= 'visible',
+            disabled= False,
+            placeholder=">O00566\nMAPQVWRRRTLERCLTEVGKATGRPECFLTIQEGLASKFT")
+        
+        prediction_button_for_protein_sequence= st.button('Predict!',key='prot_sequence')
         
         st.markdown("***")
         uniprotid_input_title = '<p style="font-size: 2rem;font-family:monospace">Uniprot Id #️⃣</p>'
@@ -49,21 +68,22 @@ def show_predict_page():
 
 
         uniprot_id = st.text_input(label = "Uniprot Id👇",
-            label_visibility=st.session_state.visibility,
-            disabled=st.session_state.disabled,
+            label_visibility= 'visible',
+            disabled= False,
             placeholder="O00566")
         
         lysine_position = st.text_input(label = "Lysine Position👇",
-            label_visibility=st.session_state.visibility,
-            disabled=st.session_state.disabled,
+            label_visibility= 'visible',
+            disabled= False,
             placeholder="20")
-        
+        prediction_button_id_and_position = st.button('Predict!',key='uniprot')
 
         st.markdown("***")
         fasta_file_title = '<p style="font-size: 2rem;font-family:monospace">Fasta File 📜</p>'
 
         st.markdown(fasta_file_title,unsafe_allow_html=True)
         uploaded_file = st.file_uploader("Choose a file in fasta format")
+        prediction_button_for_fasta = st.button('Predict!',key='fasta')
 
 
 
@@ -79,14 +99,38 @@ def show_predict_page():
         #st.success('Your Results Are Ready For Download!')
 
         if sequences:
-            with st.spinner('Data is processing...'):
-                sequence_list = sequences.split()
-                X_ = get_encoded_X_vector_from_data(sequence_list)
-            with st.spinner('Model is loading...'):
-                my_model = load_models()
-            with st.spinner('Predictions are calculating...'):
-                preds = my_model.predict(X_)
-            st.write(str(preds))
+            if prediction_button_for_protein_sequence:
+                with st.spinner('Data is processing...'):
+                    protein_ids, protein_seqs, k_positions = protein_sequence_input(sequences)
+                make_prediction(protein_ids, protein_seqs, k_positions)
+            else:
+                st.error('For new prediction please click predict button!', icon="🚨")
+
+
+        
+        if uniprot_id:
+            if prediction_button_id_and_position:
+                protein_seq = retrive_protein_sequence_with_uniprotid(uniprot_id)
+                
+                if protein_seq == None:
+                    st.error('Enter a valid Uniprot Id', icon="🚨")
+
+                else:
+                    with st.spinner('Data is processing...'):
+                        if lysine_position:
+                            lysine_position = int(lysine_position)
+                            protein_ids, protein_seqs, k_positions = uniprot_id_input(protein_seq,uniprot_id,lysine_position)
+                        else:
+                            protein_ids, protein_seqs, k_positions = uniprot_id_input(protein_seq,uniprot_id)
+
+                    make_prediction(protein_ids, protein_seqs, k_positions)
+            else:
+                st.error('For new prediction please click predict button!', icon="🚨")
+                
+
+        else:
+            if lysine_position and prediction_button_id_and_position:
+                st.error('Please enter Uniprot Id', icon="🚨")
         #csv = convert_df(df)
 
         #st.download_button(

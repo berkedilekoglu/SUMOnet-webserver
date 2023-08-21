@@ -2,11 +2,16 @@ import joblib
 import numpy as np
 import pandas as pd
 import epitopepredict as ep
+import os
+
+# Get the current directory of the script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 
 def get_min_max_scaler_path():
 
-        return "scaler/minmax_scaler.gz"
+        return os.path.join(script_dir, "minmax_scaler", "minmax_scaler.gz")
 
 def minmax(X):
 
