@@ -103,10 +103,9 @@ def retrive_protein_sequence_with_uniprotid(uniprot_id:str) -> str :
 
         return None
 
-def protein_sequence_input(sequence_fasta_str:str) -> Tuple[List[str], List[str]]:
+def protein_sequence_input(sequence_fasta_list:List[str]) -> Tuple[List[str], List[str]]:
 
     protein_ids, protein_seqs,k_positions = [], [], []
-    sequence_fasta_list = sequence_fasta_str.split()
 
     for index, item in enumerate(sequence_fasta_list):
 
@@ -143,3 +142,10 @@ def uniprot_id_input(protein_sequence,uniprot_id,lysine_position=None):
         k_positions.append(lysine_position)
 
     return protein_ids, protein_seqs, k_positions
+
+def fasta_file_input(readed_file):
+
+    content_list = readed_file.read().decode("utf-8").splitlines()        
+
+    return protein_sequence_input(content_list)
+    

@@ -101,7 +101,7 @@ def show_predict_page():
         if sequences:
             if prediction_button_for_protein_sequence:
                 with st.spinner('Data is processing...'):
-                    protein_ids, protein_seqs, k_positions = protein_sequence_input(sequences)
+                    protein_ids, protein_seqs, k_positions = protein_sequence_input(sequences.split())
                 make_prediction(protein_ids, protein_seqs, k_positions)
             else:
                 st.error('For new prediction please click predict button!', icon="🚨")
@@ -131,14 +131,16 @@ def show_predict_page():
         else:
             if lysine_position and prediction_button_id_and_position:
                 st.error('Please enter Uniprot Id', icon="🚨")
-        #csv = convert_df(df)
 
-        #st.download_button(
-        #"Press to Download",
-        #csv,
-        #"file.csv",
-        #"text/csv",
-        #key='download-csv'
-        #)
+        if uploaded_file:
+
+            if prediction_button_for_fasta:
+                with st.spinner('Data is processing...'):
+                    protein_ids, protein_seqs, k_positions = fasta_file_input(uploaded_file)
+
+                make_prediction(protein_ids, protein_seqs, k_positions)
+            else:
+                st.error('For new prediction please click predict button!', icon="🚨")
+        
 
  
