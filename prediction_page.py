@@ -16,10 +16,10 @@ sequences = None
 def convert_df(df):
    return df.to_csv(index=False).encode('utf-8')
 
-@st.cache_resource()
 def load_models():
 
-    return SUMOnet()
+    my_model = SUMOnet()
+    return my_model
 
 def make_prediction(protein_ids, protein_seqs, k_positions):
     X_train = get_encoded_X_vector_from_data(protein_seqs)

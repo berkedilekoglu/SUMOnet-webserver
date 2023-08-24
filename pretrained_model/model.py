@@ -1,5 +1,15 @@
 
 from tensorflow.keras import layers, Model, regularizers
+from loguru import logger
+
+import os
+import sys
+
+# Get the current directory of the script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(script_dir)
+
+
 
 
 class SUMOnet(Model):
@@ -25,6 +35,15 @@ class SUMOnet(Model):
 
         self.build((None, 21, 24)) #input shape is batch,21,24
 
+        self.weights_path = os.path.join(os.path.dirname(__file__), 'model_weights', 'sumonet3.h5')
+        try:
+            super().load_weights(filepath = self.weights_path)
+        except FileNotFoundError:
+            logger.error(f"Error: Weight file '{self.weights_path}' not found.")
+        except Exception as e:
+            # Log the exception using Loguru
+            logger.exception("Unhandled exception in load_weights:")
+
     def call(self, inputs):
 
         x = self.cnn(inputs)
@@ -44,10 +63,11 @@ class SUMOnet(Model):
         
         return x
 
-    def load_weights(self,model_state='final'):
+    
+       
 
-        preTrainedModelPath = 'model_weights/'+ 'sumonet3.h5'
-        super().load_weights(preTrainedModelPath)
+        
+
 
 
 
