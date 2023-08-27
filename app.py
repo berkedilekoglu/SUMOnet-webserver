@@ -3,17 +3,20 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from prediction_page import show_predict_page
 from about_page import show_about_content
-
+from tutorial_page import show_tutorial_page
 st.set_page_config(layout="wide")
 # 2. horizontal menu
-page = option_menu('SUMOnet', ["About", "Predictions"], 
-    icons=['house', 'gear'], 
+page = option_menu('SUMOnet', ["About", "Predictions", "Tutorial"], 
+    icons=['house', 'gear','bi-book'], 
     menu_icon="cast", default_index=0, orientation="horizontal")
 if page == "About":
     show_about_content()
     
 elif page == "Predictions":
     show_predict_page()
+
+elif page == "Tutorial":
+    show_tutorial_page()
     
 
 

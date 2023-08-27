@@ -2,9 +2,9 @@ import streamlit as st
 import time
 import pandas as pd
 
-from pretrained_model.model import SUMOnet
-from utils.sequence_manipulations import *
-from utils.encodings_sumo import get_encoded_X_vector_from_data
+from sumonet.model.architecture import SUMOnet
+from sumonet.utils.data_pipe import Data
+from sumonet.utils.encodings import Encoding
 from utils.prediction_utils import prediction_outputs
 
 sequences = None
@@ -19,10 +19,12 @@ def convert_df(df):
 def load_models():
 
     my_model = SUMOnet()
+    my_model.load_weights()
     return my_model
 
 def make_prediction(protein_ids, protein_seqs, k_positions):
-    X_train = get_encoded_X_vector_from_data(protein_seqs)
+    encoder = Encoding()
+    X_train = encoder.encode_data(protein_seqs)
     with st.spinner('Model is loading...'):
         my_model = load_models()
     with st.spinner('Predictions are calculating...'):
@@ -39,7 +41,7 @@ def make_prediction(protein_ids, protein_seqs, k_positions):
     )
 
 def show_predict_page():
-
+    data_processes = Data()
     st.title("""SUMOnet: Deep Sequential Prediction of SUMOylation Sites""")
     st.markdown('<p style="font-family:monospace">Important Note: Streamlit reruns the whole script each time a widget is updated. So please be carefull about refreshing page.</p>',unsafe_allow_html=True)
 
@@ -101,7 +103,8 @@ def show_predict_page():
         if sequences:
             if prediction_button_for_protein_sequence:
                 with st.spinner('Data is processing...'):
-                    protein_ids, protein_seqs, k_positions = protein_sequence_input(sequences.split())
+                    
+                    protein_ids, protein_seqs, k_positions = data_processes.protein_sequence_input(sequences.split())
                 make_prediction(protein_ids, protein_seqs, k_positions)
             else:
                 st.error('For new prediction please click predict button!', icon="🚨")
@@ -110,8 +113,8 @@ def show_predict_page():
         
         if uniprot_id:
             if prediction_button_id_and_position:
-                protein_seq = retrive_protein_sequence_with_uniprotid(uniprot_id)
-                
+                protein_seq = data_processes.retrive_protein_sequence_with_uniprotid(uniprot_id)
+            
                 if protein_seq == None:
                     st.error('Enter a valid Uniprot Id', icon="🚨")
 
@@ -119,9 +122,11 @@ def show_predict_page():
                     with st.spinner('Data is processing...'):
                         if lysine_position:
                             lysine_position = int(lysine_position)
-                            protein_ids, protein_seqs, k_positions = uniprot_id_input(protein_seq,uniprot_id,lysine_position)
+                            protein_ids, protein_seqs, k_positions = data_processes.uniprot_id_input(protein_seq,uniprot_id,lysine_position)
+                           
+
                         else:
-                            protein_ids, protein_seqs, k_positions = uniprot_id_input(protein_seq,uniprot_id)
+                            protein_ids, protein_seqs, k_positions = data_processes.uniprot_id_input(protein_seq,uniprot_id)
 
                     make_prediction(protein_ids, protein_seqs, k_positions)
             else:
@@ -136,7 +141,7 @@ def show_predict_page():
 
             if prediction_button_for_fasta:
                 with st.spinner('Data is processing...'):
-                    protein_ids, protein_seqs, k_positions = fasta_file_input(uploaded_file)
+                    protein_ids, protein_seqs, k_positions = data_processes.fasta_file_input(uploaded_file)
 
                 make_prediction(protein_ids, protein_seqs, k_positions)
             else:
