@@ -10,6 +10,8 @@ def show_tutorial_page():
     pip install sumonet
     """)
 
+    st.markdown('You can clone SUMOnet from: <a href="https://github.com/berkedilekoglu/SUMOnet" style="color: inherit; text-decoration: inherit;">github.com/berkedilekoglu/SUMOnet</a>',unsafe_allow_html=True)
+
     st.markdown('<p style="font-size: 2rem;font-family:monospace">1) Loading Data </p>',unsafe_allow_html=True)
     st.markdown('<p style="font-family:monospace">You can use our experimental data by using <strong>Data Class</strong></p>',unsafe_allow_html=True)
     st.markdown('<ul><li>By using <strong>Data</strong> class - It does not take any input variable and returns our dbPTM data as Train and Test samples and their labels</li><li>Data class gives <code>X_train</code>, <code>X_test</code> as a list of strings (21-mers), so you need to encode them</li><li><code>y_train</code> and <code>y_test</code> are lists of integers (labels), so you need to convert them to a 2-d array for feeding our model.</li></ul>',unsafe_allow_html=True)
