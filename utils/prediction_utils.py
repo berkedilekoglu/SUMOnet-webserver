@@ -5,8 +5,8 @@ def create_dataframe(protein_id, peptide_seq, k_position, predicted_probs, predi
     data_dict = {'protein_id':protein_id,
                  'peptide_seq':peptide_seq,
                  'lysine_position':k_position,
-                 'nonsumoylation_class_probs':predicted_probs[:,0],
-                 'sumoylation_class_probs':predicted_probs[:,1],
+                 'nonsumoylation_class_probs':["{:.3f}".format(num) for num in predicted_probs[:,0]],
+                 'sumoylation_class_probs':["{:.3f}".format(num) for num in predicted_probs[:,1]],
                  'predicted_labels':predicted_labels}
 
     return pd.DataFrame(data_dict)
