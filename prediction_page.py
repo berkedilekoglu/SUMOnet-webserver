@@ -10,6 +10,19 @@ from utils.prediction_utils import prediction_outputs
 sequences = None
 # Store the initial value of widgets in session state
 
+
+
+ # Initialize session_state variable
+if "sequences_input" not in st.session_state:
+    st.session_state.sequences_input = ""
+
+# Initialize session_state variable
+if "uniprot_id_input" not in st.session_state:
+    st.session_state.uniprot_id_input = ""
+
+# Initialize session_state variable
+if "uniprot_lysine_position_input" not in st.session_state:
+    st.session_state.uniprot_lysine_position_input = ""
     
 
 @st.cache_data
@@ -41,6 +54,8 @@ def make_prediction(protein_ids, protein_seqs, k_positions):
     key='download-csv'
     )
 
+
+
 def show_predict_page():
     data_processes = Data()
     st.title("""SUMOnet: Deep Sequential Prediction of SUMOylation Sites""")
@@ -48,18 +63,31 @@ def show_predict_page():
 
     st.markdown("***")
     col1, col2 = st.columns(2,gap='medium')
+    
+    
+   
 
     with col1:
         protein_seqence_input_title = '<p style="font-size: 2rem;font-family:monospace">Protein Sequence</p>'
         st.markdown(protein_seqence_input_title,unsafe_allow_html=True)
         st.markdown('<p style="font-family:monospace">You can enter protein sequence in fasta format. Multiple sequences are also okay.</p>',unsafe_allow_html=True)
-        
+
         sequences = st.text_area(label="Protein Sequence👇",
             label_visibility= 'visible',
             disabled= False,
-            placeholder=">O00566\nMAPQVWRRRTLERCLTEVGKATGRPECFLTIQEGLASKFT")
+            placeholder=">O00566\nMAPQVWRRRTLERCLTEVGKATGRPECFLTIQEGLASKFT",
+            value=st.session_state.sequences_input  
+            )
         
-        prediction_button_for_protein_sequence= st.button('Predict!',key='prot_sequence')
+        col3, col4, _, _, _= st.columns(5,gap='small')
+        with col3:
+            prediction_button_for_protein_sequence= st.button('Predict!',key='prot_sequence')
+        with col4:
+            load_sample_button_for_protein_sequence= st.button('Load Sample',key='load_sample_sequence')
+
+        if load_sample_button_for_protein_sequence:
+            st.session_state.sequences_input = ">sp|Q9UER7|DAXX_HUMAN Death domain-associated protein 6 OS=Homo sapiens OX=9606 GN=DAXX PE=1 SV=2\nMATANSIIVLDDDDEDEAAAQPGPSHPLPNAASPGAEAPSSSEPHGARGSSSSGGKKCYK\nLENEKLFEEFLELCKMQTADHPEVVPFLYNRQQRAHSLFLASAEFCNILSRVLSRARSRP\nAKLYVYINELCTVLKAHSAKKKLNLAPAATTSNEPSGNNPPTHLSLDPTNAENTASQSPR\nTRGSRRQIQRLEQLLALYVAEIRRLQEKELDLSELDDPDSAYLQEARLKRKLIRLFGRLC\nELKDCSSLTGRVIEQRIPYRGTRYPEVNRRIERLINKPGPDTFPDYGDVLRAVEKAAARH\nSLGLPRQQLQLMAQDAFRDVGIRLQERRHLDLIYNFGCHLTDDYRPGVDPALSDPVLARR\nLRENRSLAMSRLDEVISKYAMLQDKSEEGERKKRRARLQGTSSHSADTPEASLDSGEGPS\nGMASQGCPSASRAETDDEDDEESDEEEEEEEEEEEEEATDSEEEEDLEQMQEGQEDDEEE\nDEEEEAAAGKDGDKSPMSSLQISNEKNLEPGKQISRSSGEQQNKGRIVSPSLLSEEPLAP\nSSIDAESNGEQPEELTLEEESPVSQLFELEIEALPLDTPSSVETDISSSRKQSEEPFTTV\nLENGAGMVSSTSFNGGVSPHNWGDSGPPCKKSRKEKKQTGSGPLGNSYVERQRSVHEKNG\nKKICTLPSPPSPLASLAPVADSSTRVDSPSHGLVTSSLCIPSPARLSQTPHSQPPRPGTC\nKTSVATQCDPEEIIVLSDSD"
+            st.text('Please refresh page if examples were not loaded.')
         
         st.markdown("***")
         uniprotid_input_title = '<p style="font-size: 2rem;font-family:monospace">Uniprot Id #️⃣</p>'
@@ -73,13 +101,25 @@ def show_predict_page():
         uniprot_id = st.text_input(label = "Uniprot Id👇",
             label_visibility= 'visible',
             disabled= False,
-            placeholder="O00566")
-        
+            placeholder="O00566",
+            value=st.session_state.uniprot_id_input)
+
         lysine_position = st.text_input(label = "Lysine Position👇",
             label_visibility= 'visible',
             disabled= False,
-            placeholder="20")
-        prediction_button_id_and_position = st.button('Predict!',key='uniprot')
+            placeholder="20",
+            value=st.session_state.uniprot_lysine_position_input)
+        
+        col5, col6, _, _, _= st.columns(5,gap='small')
+        with col5:
+            prediction_button_id_and_position = st.button('Predict!',key='uniprot')
+        with col6:
+            load_sample_button_for_uniprot_id= st.button('Load Sample',key='load_sample_uniprot')
+
+        if load_sample_button_for_uniprot_id:
+            st.session_state.uniprot_id_input = "O00566"
+            st.session_state.uniprot_lysine_position_input = "20"
+            st.text('Please refresh page if examples were not loaded.')
 
         st.markdown("***")
         fasta_file_title = '<p style="font-size: 2rem;font-family:monospace">Fasta File 📜</p>'
@@ -104,8 +144,8 @@ def show_predict_page():
         if sequences:
             if prediction_button_for_protein_sequence:
                 with st.spinner('Data is processing...'):
-                    
-                    protein_ids, protein_seqs, k_positions = data_processes.protein_sequence_input(sequences.split())
+                    sequence_list = data_processes.fasta_to_list(sequences)
+                    protein_ids, protein_seqs, k_positions = data_processes.protein_sequence_input(sequence_list)
                 make_prediction(protein_ids, protein_seqs, k_positions)
             else:
                 st.error('For new prediction please click predict button!', icon="🚨")
@@ -142,6 +182,7 @@ def show_predict_page():
 
             if prediction_button_for_fasta:
                 with st.spinner('Data is processing...'):
+
                     protein_ids, protein_seqs, k_positions = data_processes.fasta_file_input(uploaded_file)
 
                 make_prediction(protein_ids, protein_seqs, k_positions)

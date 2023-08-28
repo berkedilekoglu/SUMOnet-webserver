@@ -1,8 +1,9 @@
 import requests as r
-
+import re
 from Bio import SeqIO
 from io import StringIO
 from typing import List, Tuple
+from loguru import logger
 
 
 
@@ -145,7 +146,54 @@ def uniprot_id_input(protein_sequence,uniprot_id,lysine_position=None):
 
 def fasta_file_input(readed_file):
 
+    print(readed_file.read().decode("utf-8"))
     content_list = readed_file.read().decode("utf-8").splitlines()        
 
     return protein_sequence_input(content_list)
+
+def extract_protein_id(header):
+    # Define the regex pattern to match the identifier between the vertical bars
+    identifier_pattern = r'\|([^|]+)\|'
+
+    # Search for the identifier using the regex pattern
+    match = re.search(identifier_pattern, header)
+
+    if match:
+        identifier = match.group(1)
+        return identifier
+    else:
+        logger.warning(f"Identifier not found in the header: {header}")
+        return header
+        
+
+def fasta_to_list(entire_text:str):
+
+    lines = entire_text.split('\n')
+    
+    sequence_lines = []
+    sequences = []
+    for line in lines:
+
+        if line.startswith('>'):
+
+                if len(sequence_lines) > 0:
+
+                    sequence = ''.join(sequence_lines)
+                    sequences.append(sequence)
+
+                    sequence_lines = []
+
+                header = extract_protein_id(line)
+                sequences.append(header)
+
+        else:
+
+            sequence_lines.append(line)
+    
+    #For the last seq
+    sequence = ''.join(sequence_lines)
+    sequences.append(sequence)
+
+    return sequences
+
     
