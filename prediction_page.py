@@ -49,7 +49,7 @@ def show_predict_page():
     col1, col2 = st.columns(2,gap='medium')
 
     with col1:
-        protein_seqence_input_title = '<p style="font-size: 2rem;font-family:monospace">Protein Sequence 🧬</p>'
+        protein_seqence_input_title = '<p style="font-size: 2rem;font-family:monospace">Protein Sequence</p>'
         st.markdown(protein_seqence_input_title,unsafe_allow_html=True)
         st.markdown('<p style="font-family:monospace">You can enter protein sequence in fasta format. Multiple sequences are also okay.</p>',unsafe_allow_html=True)
         
