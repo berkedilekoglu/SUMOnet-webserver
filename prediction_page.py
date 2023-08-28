@@ -38,7 +38,7 @@ def load_models():
 def make_prediction(protein_ids, protein_seqs, k_positions):
     encoder = Encoding()
     X_train = encoder.encode_data(protein_seqs)
-    with st.spinner('Model is loading...'):
+    with st.spinner('Predictions are coming, please wait...'):
         my_model = load_models()
     with st.spinner('Predictions are calculating...'):
         predicted_probs = my_model.predict(X_train)
