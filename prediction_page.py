@@ -30,6 +30,7 @@ def make_prediction(protein_ids, protein_seqs, k_positions):
     with st.spinner('Predictions are calculating...'):
         predicted_probs = my_model.predict(X_train)
         df = prediction_outputs(protein_ids, protein_seqs, k_positions, predicted_probs)
+    st.markdown('<p style="font-size: 2rem;font-family:monospace">Prediction Results </p>',unsafe_allow_html=True)
     st.table(df.head())
     csv = convert_df(df)
     st.download_button(
@@ -91,7 +92,7 @@ def show_predict_page():
 
     with col2:
 
-        st.markdown('<p style="font-size: 2rem;font-family:monospace">Prediction Results </p>',unsafe_allow_html=True)
+        
         
 
         ## To do predictionları df olarak al
