@@ -8,7 +8,6 @@ from sumonet.utils.encodings import Encoding
 from utils.prediction_utils import prediction_outputs
 
 sequences = None
-# Store the initial value of widgets in session state
 
 @st.cache_data
 def convert_df(df):
