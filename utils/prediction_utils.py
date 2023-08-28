@@ -1,9 +1,9 @@
 import pandas as pd
 
-def create_dataframe(protein_id, protein_seq, k_position, predicted_probs, predicted_labels):
+def create_dataframe(protein_id, peptide_seq, k_position, predicted_probs, predicted_labels):
 
     data_dict = {'protein_id':protein_id,
-                 'protein_seq':protein_seq,
+                 'peptide_seq':peptide_seq,
                  'lysine_position':k_position,
                  'nonsumoylation_class_probs':predicted_probs[:,0],
                  'sumoylation_class_probs':predicted_probs[:,1],
@@ -11,8 +11,8 @@ def create_dataframe(protein_id, protein_seq, k_position, predicted_probs, predi
 
     return pd.DataFrame(data_dict)
 
-def prediction_outputs(protein_id, protein_seq, k_position, predicted_probs):
+def prediction_outputs(protein_id, peptide_seq, k_position, predicted_probs):
 
     
     predicted_labels = predicted_probs.argmax(-1)
-    return create_dataframe(protein_id, protein_seq, k_position, predicted_probs, predicted_labels)
+    return create_dataframe(protein_id, peptide_seq, k_position, predicted_probs, predicted_labels)
