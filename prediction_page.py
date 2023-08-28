@@ -10,21 +10,6 @@ from utils.prediction_utils import prediction_outputs
 sequences = None
 # Store the initial value of widgets in session state
 
-
-
- # Initialize session_state variable
-if "sequences_input" not in st.session_state:
-    st.session_state.sequences_input = ""
-
-# Initialize session_state variable
-if "uniprot_id_input" not in st.session_state:
-    st.session_state.uniprot_id_input = ""
-
-# Initialize session_state variable
-if "uniprot_lysine_position_input" not in st.session_state:
-    st.session_state.uniprot_lysine_position_input = ""
-    
-
 @st.cache_data
 def convert_df(df):
    return df.to_csv(index=False).encode('utf-8')
@@ -65,6 +50,17 @@ def show_predict_page():
     col1, col2 = st.columns(2,gap='medium')
     
     
+    # Initialize session_state variable
+    if "sequences_input" not in st.session_state:
+        st.session_state.sequences_input = ""
+
+    # Initialize session_state variable
+    if "uniprot_id_input" not in st.session_state:
+        st.session_state.uniprot_id_input = ""
+
+    # Initialize session_state variable
+    if "uniprot_lysine_position_input" not in st.session_state:
+        st.session_state.uniprot_lysine_position_input = ""
    
 
     with col1:
