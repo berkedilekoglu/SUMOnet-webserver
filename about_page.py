@@ -13,7 +13,7 @@ def show_about_content():
     st.markdown('<p style="font-family:monospace; font-size: 1rem;">If you use SUMOnet  in your work, please do cite us:</p>', unsafe_allow_html=True)
     cite = '''
 <p style="font-family:monospace; font-size: 1rem;">
-    Dilekoglu, B., Tastan, O.: Sumonet: Deep sequential prediction of sumoylation sites. bioRxiv (2023). https://doi.org/10.1101/2023.08.25.554749, <a href="https://www.biorxiv.org/content/early/2023/08/25/2023.08.25.554749" style="color: inherit; text-decoration: inherit;">https://www.biorxiv.org/content/early/2023/08/25/2023.08.25.554749</a>
+    <a href="https://www.biorxiv.org/content/early/2023/08/25/2023.08.25.554749" style="color: inherit; text-decoration: inherit;">Dilekoglu, B., Tastan, O.: Sumonet: Deep sequential prediction of sumoylation sites. bioRxiv (2023).</a>
 </p>
 '''
     st.markdown(cite, unsafe_allow_html=True)
