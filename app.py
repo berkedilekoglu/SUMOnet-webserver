@@ -8,13 +8,13 @@ from tutorial_page import show_tutorial_page
 
 def main():
     # 2. horizontal menu
-    page = option_menu('SUMOnet', ["About", "Predictions", "Tutorial"], 
-        icons=['house', 'gear','bi-book'], 
+    page = option_menu('SUMOnet', [ "Predict", "Tutorial","About"], 
+        icons=['gear','bi-book','house'], 
         menu_icon="cast", default_index=0, orientation="horizontal")
     if page == "About":
         show_about_content()
         
-    elif page == "Predictions":
+    elif page == "Predict":
         show_predict_page()
 
     elif page == "Tutorial":
