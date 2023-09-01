@@ -64,7 +64,7 @@ def show_predict_page():
 
     with col1:
         
-        uniprotid_input_title = '<p style="font-size: 2rem;font-family:monospace">Enter UniprotID #️⃣</p>'
+        uniprotid_input_title = '<p style="font-size: 2rem;font-family:monospace">Enter UniprotID</p>'
         st.markdown(uniprotid_input_title,unsafe_allow_html=True)
 
         st.markdown('<p style="font-family:monospace">You can enter uniprotid and specific Lysine position.</p>',unsafe_allow_html=True)
@@ -119,7 +119,7 @@ def show_predict_page():
         
         
         st.markdown("***")
-        fasta_file_title = '<p style="font-size: 2rem;font-family:monospace">Upload a Fasta File📜</p>'
+        fasta_file_title = '<p style="font-size: 2rem;font-family:monospace">Upload a Fasta File</p>'
 
         st.markdown(fasta_file_title,unsafe_allow_html=True)
         uploaded_file = st.file_uploader("Choose a file in fasta format")
