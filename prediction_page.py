@@ -86,10 +86,10 @@ def show_predict_page():
         
         col5, col6, _, _, _= st.columns(5,gap='small')
         with col5:
-            prediction_button_id_and_position = st.button('Predict!',key='uniprot')
-        with col6:
             load_sample_button_for_uniprot_id= st.button('Load Sample',key='load_sample_uniprot')
-
+        with col6:
+            prediction_button_id_and_position = st.button('Predict!',key='uniprot')
+            
         if load_sample_button_for_uniprot_id:
             st.session_state.uniprot_id_input = "O00566"
             st.session_state.uniprot_lysine_position_input = "20"
@@ -109,10 +109,10 @@ def show_predict_page():
         
         col3, col4, _, _, _= st.columns(5,gap='small')
         with col3:
-            prediction_button_for_protein_sequence= st.button('Predict!',key='prot_sequence')
-        with col4:
             load_sample_button_for_protein_sequence= st.button('Load Sample',key='load_sample_sequence')
-
+        with col4:
+            prediction_button_for_protein_sequence= st.button('Predict!',key='prot_sequence')
+            
         if load_sample_button_for_protein_sequence:
             st.session_state.sequences_input = ">sp|Q9UER7|DAXX_HUMAN Death domain-associated protein 6 OS=Homo sapiens OX=9606 GN=DAXX PE=1 SV=2\nMATANSIIVLDDDDEDEAAAQPGPSHPLPNAASPGAEAPSSSEPHGARGSSSSGGKKCYK\nLENEKLFEEFLELCKMQTADHPEVVPFLYNRQQRAHSLFLASAEFCNILSRVLSRARSRP\nAKLYVYINELCTVLKAHSAKKKLNLAPAATTSNEPSGNNPPTHLSLDPTNAENTASQSPR\nTRGSRRQIQRLEQLLALYVAEIRRLQEKELDLSELDDPDSAYLQEARLKRKLIRLFGRLC\nELKDCSSLTGRVIEQRIPYRGTRYPEVNRRIERLINKPGPDTFPDYGDVLRAVEKAAARH\nSLGLPRQQLQLMAQDAFRDVGIRLQERRHLDLIYNFGCHLTDDYRPGVDPALSDPVLARR\nLRENRSLAMSRLDEVISKYAMLQDKSEEGERKKRRARLQGTSSHSADTPEASLDSGEGPS\nGMASQGCPSASRAETDDEDDEESDEEEEEEEEEEEEEATDSEEEEDLEQMQEGQEDDEEE\nDEEEEAAAGKDGDKSPMSSLQISNEKNLEPGKQISRSSGEQQNKGRIVSPSLLSEEPLAP\nSSIDAESNGEQPEELTLEEESPVSQLFELEIEALPLDTPSSVETDISSSRKQSEEPFTTV\nLENGAGMVSSTSFNGGVSPHNWGDSGPPCKKSRKEKKQTGSGPLGNSYVERQRSVHEKNG\nKKICTLPSPPSPLASLAPVADSSTRVDSPSHGLVTSSLCIPSPARLSQTPHSQPPRPGTC\nKTSVATQCDPEEIIVLSDSD"
             st.text('Please refresh page if examples were not loaded.')
