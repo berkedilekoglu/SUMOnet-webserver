@@ -27,6 +27,7 @@ def make_prediction(protein_ids, protein_seqs, k_positions):
     with st.spinner('Predictions are calculating...'):
         predicted_probs = my_model.predict(X_train)
         df = prediction_outputs(protein_ids, protein_seqs, k_positions, predicted_probs)
+        df = df.sort_values(by='sumoylation_class_probs', ascending=False)
     st.markdown('<p style="font-size: 2rem;font-family:monospace">Prediction Results </p>',unsafe_allow_html=True)
     st.table(df.head())
     csv = convert_df(df)
@@ -122,21 +123,15 @@ def show_predict_page():
         fasta_file_title = '<p style="font-size: 2rem;font-family:monospace">Upload a Fasta File</p>'
 
         st.markdown(fasta_file_title,unsafe_allow_html=True)
-        uploaded_file = st.file_uploader("Choose a file in fasta format")
+        try:
+            uploaded_file = st.file_uploader("Choose a file in fasta format")
+        except:
+            st.error('Something goes wrong. Please re-upload the data!', icon="🚨")
         prediction_button_for_fasta = st.button('Predict!',key='fasta')
 
 
 
     with col2:
-
-        
-        
-
-        ## To do predictionları df olarak al
-        ## ProtId, 21-mer, predicted_label, predicted_probs
-        #with st.spinner('Wait for it...'):
-        #        time.sleep(5)
-        #st.success('Your Results Are Ready For Download!')
 
         if sequences:
             if prediction_button_for_protein_sequence:
