@@ -21,7 +21,7 @@ def main():
         show_tutorial_page()
 
 if __name__ == "__main__":
-    st.set_page_config(layout="wide")
+    st.set_page_config(layout="wide",page_title='SUMOnet')
     main()
     
 
