@@ -93,9 +93,9 @@ def show_predict_page():
             st.text('Please refresh page if examples were not loaded.')
             
         st.markdown("***")
-        protein_seqence_input_title = '<p style="font-size: 2rem;font-family:monospace">Upload Protein Sequence</p>'
+        protein_seqence_input_title = '<p style="font-size: 2rem;font-family:monospace">Enter Protein Sequence(s)</p>'
         st.markdown(protein_seqence_input_title,unsafe_allow_html=True)
-        st.markdown('<p style="font-family:monospace">You can enter protein sequence in fasta format. Multiple sequences are also okay.</p>',unsafe_allow_html=True)
+        st.markdown('<p style="font-family:monospace">You may enter multiple or a single sequence in fasta format. SUMOnet will scan for all Lysine positions.</p>',unsafe_allow_html=True)
 
         sequences = st.text_area(label="Protein Sequence👇",
             label_visibility= 'visible',
