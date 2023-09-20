@@ -67,10 +67,7 @@ def show_predict_page():
         uniprotid_input_title = '<p style="font-size: 2rem;font-family:monospace">Enter UniprotID</p>'
         st.markdown(uniprotid_input_title,unsafe_allow_html=True)
 
-        st.markdown('<p style="font-family:monospace">You can enter uniprotid and specific Lysine position.</p>',unsafe_allow_html=True)
-        st.markdown('<p style="font-family:monospace">If Lysine position is given, prediction will be made for only that Lysine residue.</p>',unsafe_allow_html=True)
-        st.markdown('<p style="font-family:monospace">If Lysine position is not given, prediction will be made for all Lysine residues in protein sequence.</p>',unsafe_allow_html=True)
-
+        st.markdown('<p style="font-family:monospace">Please enter a valid UniprotID and/or a specific Lysine position. If a Lysine position is provided, the model will predict the SUMOylation status of that position. Otherwise, SUMOnet will be provide predictions for all Lysine positions in the sequence.</p>',unsafe_allow_html=True)
 
         uniprot_id = st.text_input(label = "Uniprot Id👇",
             label_visibility= 'visible',
@@ -94,7 +91,7 @@ def show_predict_page():
             st.session_state.uniprot_id_input = "O00566"
             st.session_state.uniprot_lysine_position_input = "20"
             st.text('Please refresh page if examples were not loaded.')
-
+            
         st.markdown("***")
         protein_seqence_input_title = '<p style="font-size: 2rem;font-family:monospace">Upload Protein Sequence</p>'
         st.markdown(protein_seqence_input_title,unsafe_allow_html=True)
@@ -112,7 +109,7 @@ def show_predict_page():
             load_sample_button_for_protein_sequence= st.button('Load Sample',key='load_sample_sequence')
         with col4:
             prediction_button_for_protein_sequence= st.button('Predict!',key='prot_sequence')
-            
+       
         if load_sample_button_for_protein_sequence:
             st.session_state.sequences_input = ">sp|Q9UER7|DAXX_HUMAN Death domain-associated protein 6 OS=Homo sapiens OX=9606 GN=DAXX PE=1 SV=2\nMATANSIIVLDDDDEDEAAAQPGPSHPLPNAASPGAEAPSSSEPHGARGSSSSGGKKCYK\nLENEKLFEEFLELCKMQTADHPEVVPFLYNRQQRAHSLFLASAEFCNILSRVLSRARSRP\nAKLYVYINELCTVLKAHSAKKKLNLAPAATTSNEPSGNNPPTHLSLDPTNAENTASQSPR\nTRGSRRQIQRLEQLLALYVAEIRRLQEKELDLSELDDPDSAYLQEARLKRKLIRLFGRLC\nELKDCSSLTGRVIEQRIPYRGTRYPEVNRRIERLINKPGPDTFPDYGDVLRAVEKAAARH\nSLGLPRQQLQLMAQDAFRDVGIRLQERRHLDLIYNFGCHLTDDYRPGVDPALSDPVLARR\nLRENRSLAMSRLDEVISKYAMLQDKSEEGERKKRRARLQGTSSHSADTPEASLDSGEGPS\nGMASQGCPSASRAETDDEDDEESDEEEEEEEEEEEEEATDSEEEEDLEQMQEGQEDDEEE\nDEEEEAAAGKDGDKSPMSSLQISNEKNLEPGKQISRSSGEQQNKGRIVSPSLLSEEPLAP\nSSIDAESNGEQPEELTLEEESPVSQLFELEIEALPLDTPSSVETDISSSRKQSEEPFTTV\nLENGAGMVSSTSFNGGVSPHNWGDSGPPCKKSRKEKKQTGSGPLGNSYVERQRSVHEKNG\nKKICTLPSPPSPLASLAPVADSSTRVDSPSHGLVTSSLCIPSPARLSQTPHSQPPRPGTC\nKTSVATQCDPEEIIVLSDSD"
             st.text('Please refresh page if examples were not loaded.')
