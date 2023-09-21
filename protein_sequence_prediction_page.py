@@ -22,7 +22,7 @@ def load_models():
 def make_prediction(protein_ids, protein_seqs, k_positions):
     encoder = Encoding()
     X_train = encoder.encode_data(protein_seqs)
-    with st.spinner('Data is Processing...'):
+    with st.spinner('Predictions are calculated...'):
         my_model = load_models()
         predicted_probs = my_model.predict(X_train)
         df = prediction_outputs(protein_ids, protein_seqs, k_positions, predicted_probs)
@@ -81,7 +81,7 @@ def show_protein_sequence_page_content():
 
         if load_sample_button_for_protein_sequence:
             st.session_state.sequences_input = ">sp|Q9UER7|DAXX_HUMAN Death domain-associated protein 6 OS=Homo sapiens OX=9606 GN=DAXX PE=1 SV=2\nMATANSIIVLDDDDEDEAAAQPGPSHPLPNAASPGAEAPSSSEPHGARGSSSSGGKKCYK\nLENEKLFEEFLELCKMQTADHPEVVPFLYNRQQRAHSLFLASAEFCNILSRVLSRARSRP\nAKLYVYINELCTVLKAHSAKKKLNLAPAATTSNEPSGNNPPTHLSLDPTNAENTASQSPR\nTRGSRRQIQRLEQLLALYVAEIRRLQEKELDLSELDDPDSAYLQEARLKRKLIRLFGRLC\nELKDCSSLTGRVIEQRIPYRGTRYPEVNRRIERLINKPGPDTFPDYGDVLRAVEKAAARH\nSLGLPRQQLQLMAQDAFRDVGIRLQERRHLDLIYNFGCHLTDDYRPGVDPALSDPVLARR\nLRENRSLAMSRLDEVISKYAMLQDKSEEGERKKRRARLQGTSSHSADTPEASLDSGEGPS\nGMASQGCPSASRAETDDEDDEESDEEEEEEEEEEEEEATDSEEEEDLEQMQEGQEDDEEE\nDEEEEAAAGKDGDKSPMSSLQISNEKNLEPGKQISRSSGEQQNKGRIVSPSLLSEEPLAP\nSSIDAESNGEQPEELTLEEESPVSQLFELEIEALPLDTPSSVETDISSSRKQSEEPFTTV\nLENGAGMVSSTSFNGGVSPHNWGDSGPPCKKSRKEKKQTGSGPLGNSYVERQRSVHEKNG\nKKICTLPSPPSPLASLAPVADSSTRVDSPSHGLVTSSLCIPSPARLSQTPHSQPPRPGTC\nKTSVATQCDPEEIIVLSDSD"
-            st.text('Please refresh page if examples were not loaded.')
+            st.text('Please click again if examples were not loaded or refresh page.')
 
 
     with col2:

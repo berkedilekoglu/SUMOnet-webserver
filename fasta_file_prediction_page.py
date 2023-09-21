@@ -22,7 +22,7 @@ def load_models():
 def make_prediction(protein_ids, protein_seqs, k_positions):
     encoder = Encoding()
     X_train = encoder.encode_data(protein_seqs)
-    with st.spinner('Data is Processing...'):
+    with st.spinner('Predictions are calculated...'):
         my_model = load_models()
         predicted_probs = my_model.predict(X_train)
         df = prediction_outputs(protein_ids, protein_seqs, k_positions, predicted_probs)
@@ -78,9 +78,10 @@ def show_fasta_file_page_content():
         if uploaded_file:
 
             if prediction_button_for_fasta:
-                with st.spinner('Data is processing...'):
+                    
                     try:
-                        protein_ids, protein_seqs, k_positions = data_processes.fasta_file_input(uploaded_file)
+                        with st.spinner('Data is processing...'):
+                            protein_ids, protein_seqs, k_positions = data_processes.fasta_file_input(uploaded_file)
                         make_prediction(protein_ids, protein_seqs, k_positions)
                         logger.success(f"Fasta file sequence predicted with protein id: {protein_ids}, protein_seqs: {protein_seqs} and k positions: {k_positions}")
                     except Exception as e:
