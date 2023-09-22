@@ -85,7 +85,7 @@ def show_fasta_file_page_content():
                         make_prediction(protein_ids, protein_seqs, k_positions)
                         logger.success(f"Fasta file sequence predicted with protein id: {protein_ids}, protein_seqs: {protein_seqs} and k positions: {k_positions}")
                     except Exception as e:
-                        st.error('Error occurred while processing text in fasta file! Please check text format in file, it should be in fasta format!', icon="🚨")
+                        st.error('Error occurred while processing text in fasta file! Please make sure the input is fasta formatted.', icon="🚨")
                         logger.error("Error occurred while processing text in fasta file: {error_message}", error_message=str(e))
                 
             else:

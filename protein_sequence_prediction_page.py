@@ -99,7 +99,7 @@ def show_protein_sequence_page_content():
                 except Exception as e:
 
                     logger.error("Error occurred while making prediction : {error_message}", error_message=str(e))
-                    st.error(f'Something goes wrong please check input format and try again!', icon="🚨")
+                    st.error(f'Please make sure the input is fasta formatted and try again!', icon="🚨")
                                 
             else:
                 st.error('For new prediction please click predict button!', icon="🚨")
